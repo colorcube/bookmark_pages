@@ -3,13 +3,13 @@ defined('TYPO3_MODE') or die('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'Colorcube.' . $_EXTKEY,
-    'PiExample',
+    'Bookmarks',
     array(
-        'Example' => 'index, greet',
+        'Bookmarks' => 'index, greet',
     ),
     // non-cacheable actions
     array(
-        'Example' => 'greet',
+        'Bookmarks' => 'greet',
     )
 );
 

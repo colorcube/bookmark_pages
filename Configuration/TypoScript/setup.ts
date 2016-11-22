@@ -4,9 +4,6 @@ plugin.tx_bookmarkpages {
 		partialRootPath = {$plugin.tx_bookmarkpages.view.partialRootPath}
 		layoutRootPath = {$plugin.tx_bookmarkpages.view.layoutRootPath}
 	}
-	settings {
-		ajaxPageType = {$plugin.tx_bookmarkpages.settings.ajaxPageType}
-	}
 }
 
 page.includeJSFooterlibs {

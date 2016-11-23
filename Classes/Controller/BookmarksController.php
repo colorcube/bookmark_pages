@@ -12,6 +12,8 @@ namespace Colorcube\BookmarkPages\Controller;
  * LICENSE file that was distributed with this source code.
  */
 
+use Colorcube\BookmarkPages\Model\Bookmark;
+use Colorcube\BookmarkPages\Model\Bookmarks;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -28,18 +30,32 @@ class BookmarksController extends ActionController
      */
     public function indexAction()
     {
+        $bookmarks = new Bookmarks();
+
+//        $bookmark = new Bookmark('http://www.google.de', 'Google', $pid=null, $parameter);
+//        $bookmarks->addBookmark($bookmark);
+//        $bookmark = new Bookmark('', 'One', 1, 'abc');
+//        $bookmarks->addBookmark($bookmark);
+//        $bookmark = Bookmark::createFromCurrent();
+//        $bookmarks->addBookmark($bookmark);
+//        $bookmarks->persist();
         $this->view->assign('name', 'Jarvis');
+        $this->view->assign('bookmarks', (array)$bookmarks->getBookmarks());
     }
 
     /**
-     * Action greeting
      *
-     * @param string $name
+     *
+     * @param string $id
      *
      * @return void
      */
-    public function greetAction($name)
+    public function deleteAction($id)
     {
-        $this->view->assign('name', $name);
+        $bookmarks = new Bookmarks();
+        $bookmarks->removeBookmark($id);
+        $bookmarks->persist();
+        $this->view->assign('bookmarks', (array)$bookmarks->getBookmarks());
     }
+
 }

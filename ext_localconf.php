@@ -5,11 +5,11 @@ defined('TYPO3_MODE') or die('Access denied.');
     'Colorcube.' . $_EXTKEY,
     'Bookmarks',
     array(
-        'Bookmarks' => 'index, greet, delete',
+        'Bookmarks' => 'index, bookmark, delete',
     ),
     // non-cacheable actions
     array(
-        'Bookmarks' => 'index, greet, delete',
+        'Bookmarks' => 'index, bookmark, delete',
     )
 );
 

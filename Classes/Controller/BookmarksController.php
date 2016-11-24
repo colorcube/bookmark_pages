@@ -26,36 +26,55 @@ class BookmarksController extends ActionController
 {
 
     /**
-     * @return void
+     * display bookmarks list
      */
     public function indexAction()
     {
         $bookmarks = new Bookmarks();
 
-//        $bookmark = new Bookmark('http://www.google.de', 'Google', $pid=null, $parameter);
-//        $bookmarks->addBookmark($bookmark);
-//        $bookmark = new Bookmark('', 'One', 1, 'abc');
-//        $bookmarks->addBookmark($bookmark);
-//        $bookmark = Bookmark::createFromCurrent();
-//        $bookmarks->addBookmark($bookmark);
-//        $bookmarks->persist();
-        $this->view->assign('name', 'Jarvis');
-        $this->view->assign('bookmarks', (array)$bookmarks->getBookmarks());
+        // testing
+        // $bookmark = new Bookmark('http://www.google.de', 'Google', $pid=null, $parameter=null);
+        // $bookmarks->addBookmark($bookmark);
+        
+        // $bookmark = new Bookmark('', 'One', 1, 'abc');
+        // $bookmarks->addBookmark($bookmark);
+        
+        // $bookmark = Bookmark::createFromCurrent();
+        // $bookmarks->addBookmark($bookmark);
+        // $bookmarks->persist();
+        
+        $this->view->assign('bookmarks', $bookmarks->getBookmarks());
     }
 
     /**
+     * Adds the current page as bookmark and renders/returns updated list as html
      *
+     * This is meant to be called by ajax (typoscript_rendering)
+     */
+    public function bookmarkAction()
+    {
+        $bookmark = Bookmark::createFromCurrent();
+
+        $bookmarks = new Bookmarks();
+        $bookmarks->addBookmark($bookmark);
+        $bookmarks->persist();
+
+        $this->view->assign('bookmarks', $bookmarks->getBookmarks());
+    }
+
+    /**
+     * Remove a bookmark from list and renders/returns updated list as html
+     *
+     * This is meant to be called by ajax (typoscript_rendering)
      *
      * @param string $id
-     *
-     * @return void
      */
     public function deleteAction($id)
     {
         $bookmarks = new Bookmarks();
         $bookmarks->removeBookmark($id);
         $bookmarks->persist();
-        $this->view->assign('bookmarks', (array)$bookmarks->getBookmarks());
+        $this->view->assign('bookmarks', $bookmarks->getBookmarks());
     }
 
 }

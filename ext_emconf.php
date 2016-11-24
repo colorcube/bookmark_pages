@@ -3,22 +3,22 @@
 
 $EM_CONF[$_EXTKEY] = array(
     'title' => 'Bookmark Pages',
-    'description' => 'Provide bookmarks functionality of local pages for logged in frontend users.',
+    'description' => 'Provides bookmarks functionality of local pages for logged in frontend users.',
     'category' => 'Plugins',
     'author' => 'René Fritz',
-    'author_email' => '',
-    'author_company' => '',
+    'author_email' => 'r.fritz@colorcube.de',
+    'author_company' => 'Colorcube',
     'shy' => '',
     'priority' => '',
     'module' => '',
-    'state' => 'alpha',
+    'state' => 'stable',
     'internal' => '',
     'uploadfolder' => '0',
     'createDirs' => '',
     'modify_tables' => '',
     'clearCacheOnLoad' => 1,
     'lockType' => '',
-    'version' => '0.0.1',
+    'version' => '1.0.0',
     'constraints' => array(
         'depends' => array(
             'php' => '5.3.7-7.0.999',

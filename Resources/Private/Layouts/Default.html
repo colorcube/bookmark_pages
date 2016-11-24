@@ -1,1 +1,3 @@
-<f:render section="main" />
+<f:security.ifAuthenticated>
+    <f:render section="main" />
+</f:security.ifAuthenticated>

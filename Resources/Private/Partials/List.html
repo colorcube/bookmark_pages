@@ -1,13 +1,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers"
 	  xmlns:t="http://typo3.org/ns/Helhum/TyposcriptRendering/ViewHelpers" data-namespace-typo3-fluid="true">
-<div id="bookmarks">
 
 	<ul id="bookmarks-list" class="menu vertical">
 		<f:for each="{bookmarks}" as="bookmark">
-			<li><f:link.external uri="{bookmark.url}" title="{bookmark.title}">{bookmark.title}</f:link.external><a class="action-button ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'delete', arguments: {id:bookmark.id}  )}" >&times;</a>
+			<li><f:link.external uri="{bookmark.url}" title="{bookmark.title}">{bookmark.title}</f:link.external><a class="action-button bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'delete', arguments: {id: bookmark.id} )}" >&times;</a>
 		</f:for>
 	</ul>
 
-</div>
 </html>

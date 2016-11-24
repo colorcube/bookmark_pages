@@ -12,7 +12,7 @@ namespace Colorcube\BookmarkPages\Model;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
+
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -71,7 +71,7 @@ class Bookmarks {
      */
     public function getBookmarks()
     {
-        return $this->bookmarks;
+        return (array)$this->bookmarks;
     }
 
 
@@ -92,7 +92,7 @@ class Bookmarks {
      */
     public function addBookmark(Bookmark $bookmark)
     {
-        $this->bookmarks[$bookmark->id] = $bookmark;
+        $this->bookmarks[$bookmark->getId()] = $bookmark;
         $this->changeFlag = true;
     }
 
@@ -135,7 +135,7 @@ class Bookmarks {
              * Why xml?
              *
              * Why not! You can even process it in the db if you like
-             * (And dooon't tell me json would be a good idea)
+             * (And dooon't tell me json would be a good idea, or serialized php ... haaahaaaaaa)
              */
             $bookMarksXml = GeneralUtility::array2xml($bookmarks);
 
@@ -143,6 +143,7 @@ class Bookmarks {
                 $this->getUser()->user_table,
                 $this->getUser()->userid_column . '=' . (int)$this->getUser()->user[$this->getUser()->userid_column],
                 [self::BOOKMARKS_COLUMN => $bookMarksXml]);
+
             $this->changeFlag = false;
         }
     }
@@ -150,7 +151,7 @@ class Bookmarks {
 
     /**
      * Get global frontend user
-     * @return FrontendUserAuthentication
+     * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     protected function getUser()
     {
@@ -160,7 +161,7 @@ class Bookmarks {
 
     /**
      * Get global database connection
-     * @return DatabaseConnection
+     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
      */
     protected function getDatabaseConnection()
     {

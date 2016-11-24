@@ -12,7 +12,6 @@ namespace Colorcube\BookmarkPages\Model;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -80,8 +79,8 @@ class Bookmark {
     public static function createFromCurrent()
     {
         $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
-        $pid = $GLOBALS['TSFE']->id;
-        $title = $GLOBALS['TSFE']->indexedDocTitle;
+        $pid = self::getFrontend()->id;
+        $title = self::getCurrentPageTitle();
 
         /*
          * So what is the idea of storing the pid and the get vars?
@@ -195,6 +194,23 @@ class Bookmark {
             'pid' => $this->pid,
             'parameter' => $this->parameter,
         ];
+    }
+
+
+
+    protected static function getCurrentPageTitle()
+    {
+        return self::getFrontend()->altPageTitle? self::getFrontend()->altPageTitle : self::getFrontend()->page['title'];
+    }
+
+
+    /**
+     * Get global frontend user
+     * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     */
+    protected static function getFrontend()
+    {
+        return $GLOBALS["TSFE"];
     }
 
 }

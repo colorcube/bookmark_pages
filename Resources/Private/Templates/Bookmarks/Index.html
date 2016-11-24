@@ -2,14 +2,23 @@
 	  xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers"
 	  xmlns:t="http://typo3.org/ns/Helhum/TyposcriptRendering/ViewHelpers" data-namespace-typo3-fluid="true">
 
-<head>
-</head>
-
 <f:layout name="Default" />
 
 <f:section name="main">
-	<h4>Favoriten</h4>
-	<f:render partial="List"  arguments="{_all}" />
+	<div id="bookmarks" class="bookmark-pages">
+		<h4>Favoriten</h4>
+
+		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >Seite merken</a></p>
+
+		<f:render partial="List"  arguments="{_all}" />
+	</div>
+
+
+
+
+	<div class="bookmark-pages">
+		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >Seite merken</a></p>
+	</div>
 </f:section>
 
 </html>

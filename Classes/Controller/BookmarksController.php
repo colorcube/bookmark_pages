@@ -14,6 +14,7 @@ namespace Colorcube\BookmarkPages\Controller;
 
 use Colorcube\BookmarkPages\Model\Bookmark;
 use Colorcube\BookmarkPages\Model\Bookmarks;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
@@ -53,7 +54,8 @@ class BookmarksController extends ActionController
      */
     public function bookmarkAction()
     {
-        $bookmark = Bookmark::createFromCurrent();
+        // use the parameter directly and ignore chash because url is detected and submitted by JS
+        $bookmark = Bookmark::createFromCurrent(GeneralUtility::_GP('url'));
 
         $bookmarks = new Bookmarks();
         $bookmarks->addBookmark($bookmark);

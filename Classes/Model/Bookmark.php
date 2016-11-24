@@ -74,11 +74,12 @@ class Bookmark {
     /**
      * Create bBookmark from the current TSFE page
      *
+     * @param string url to bookmark, if null TYPO3_REQUEST_URL will be used - which is wrong when we're in ajax context
      * @return Bookmark
      */
-    public static function createFromCurrent()
+    public static function createFromCurrent($url = null)
     {
-        $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        $url = $url ? $url : GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
         $pid = self::getFrontend()->id;
         $title = self::getCurrentPageTitle();
 
@@ -197,7 +198,10 @@ class Bookmark {
     }
 
 
-
+    /**
+     * Get the current page title
+     * @return string
+     */
     protected static function getCurrentPageTitle()
     {
         return self::getFrontend()->altPageTitle? self::getFrontend()->altPageTitle : self::getFrontend()->page['title'];

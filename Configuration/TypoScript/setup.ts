@@ -1,8 +1,8 @@
 plugin.tx_bookmarkpages {
 	view {
-		templateRootPath = {$plugin.tx_bookmarkpages.view.templateRootPath}
-		partialRootPath = {$plugin.tx_bookmarkpages.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_bookmarkpages.view.layoutRootPath}
+		templateRootPaths.10 = {$plugin.tx_bookmarkpages.view.templateRootPath}
+		partialRootPaths.10 = {$plugin.tx_bookmarkpages.view.partialRootPath}
+		layoutRootPaths.10 = {$plugin.tx_bookmarkpages.view.layoutRootPath}
 	}
 }
 

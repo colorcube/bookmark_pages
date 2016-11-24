@@ -8,10 +8,13 @@
             event.preventDefault();
             var $submitButton = $(this);
             var uri = $submitButton.data('ajaxuri');
+            var parameters = {};
+            parameters['url'] = window.location.href;
             $.ajax(
                 uri,
                 {
-                    'type': 'get'
+                    'type': 'post',
+                    'data': parameters
                 }
             ).done(function (result) {
                 $('#bookmarks-list').html(result);

@@ -10,14 +10,14 @@
 
 		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >Seite merken</a></p>
 
-		<f:render partial="List"  arguments="{_all}" />
+		<ul id="bookmarks-list" class="menu vertical">
+			<f:render partial="List"  arguments="{_all}" />
+		</ul>
 	</div>
 
-
-
-
+	<f:comment>you may put this into your page template:</f:comment>
 	<div class="bookmark-pages">
-		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >Seite merken</a></p>
+		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(extensionName: 'bookmarkpages', pluginName: 'Bookmarks', controller: 'Bookmarks', action: 'bookmark', contextRecord: 'currentPage')}" >Seite merken</a></p>
 	</div>
 </f:section>
 

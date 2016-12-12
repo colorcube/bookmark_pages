@@ -72,16 +72,46 @@ class Bookmark {
     }
 
     /**
-     * Create bBookmark from the current TSFE page
+     * Create bookmark from the current TSFE page
      *
-     * @param string url to bookmark, if null TYPO3_REQUEST_URL will be used - which is wrong when we're in ajax context
+     * @param string url to bookmark, if null TYPO3_REQUEST_URL will be used - which is wrong when we're in ajax context, then we use HTTP_REFERER
      * @return Bookmark
      */
     public static function createFromCurrent($url = null)
     {
-        $url = $url ? $url : GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        if ($url === null) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
+                //request is ajax
+                $url = GeneralUtility::getIndpEnv('HTTP_REFERER');
+            } else {
+                $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+            }
+        }
+
+
         $pid = self::getFrontend()->id;
         $title = self::getCurrentPageTitle();
+
+        /*
+
+        The idea was to store get parameters to make bookmark handling more flexible.
+        Unfortunately that didn't worked out.
+
+        When we use ajax to trigger bookmarking the current page, we can pass the current url as parameter.
+        But the url doesn't have the parameters in it when you use speaking urls (realurl, simulatestatic, ...).
+        The problem is that there's no common api to decode urls and get the parameters.
+
+        One solution would be to make the parameters available to the ajax javascript during page rendering.
+
+        We skip all this and use a bit from the url for hashing and add the page id.
+
+         */
+
+        $urlParts = parse_url($url);
+        $parameter = $urlParts['path'].'?'.$urlParts['query'].'#'.$urlParts['fragment'];
+
+        return new self($url, $title, $pid, $parameter);
+
 
         /*
          * So what is the idea of storing the pid and the get vars?
@@ -91,13 +121,13 @@ class Bookmark {
          *
          * Not sure which way is better ...
          */
-        $parameter = (array)GeneralUtility::_GET();
-        unset($parameter['id']);
-        // @todo remove cHash?
-        ksort($parameter);
-        $parameter = $parameter ? GeneralUtility::implodeArrayForUrl(false, $parameter) : '';
-
-        return new self($url, $title, $pid, $parameter);
+        //        $parameter = (array)GeneralUtility::_GET();
+        //        unset($parameter['id']);
+        //        // @todo remove cHash?
+        //        ksort($parameter);
+        //        $parameter = $parameter ? GeneralUtility::implodeArrayForUrl(false, $parameter) : '';
+        //
+        //        return new self($url, $title, $pid, $parameter);
     }
 
     /**
@@ -214,7 +244,7 @@ class Bookmark {
      */
     protected static function getFrontend()
     {
-        return $GLOBALS["TSFE"];
+        return $GLOBALS['TSFE'];
     }
 
 }

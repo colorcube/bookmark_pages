@@ -1,5 +1,11 @@
 (function ($) {
     $(function () {
+
+        if ( $( "#is-bookmarked" ).length ) {
+            // add a class to all bookmark links on the page because somewhere is a #is-bookmarked flag in html
+            $('.bookmark-this-page').addClass('is-bookmarked');
+        }
+
         // doing it this way:
         // $('.bookmark-ajax-submit').on('click', function (event) {
         // would not work for initially hidden elements
@@ -8,17 +14,21 @@
             event.preventDefault();
             var $submitButton = $(this);
             var uri = $submitButton.data('ajaxuri');
-            var parameters = {};
-            parameters['url'] = window.location.href;
             $.ajax(
                 uri,
                 {
-                    'type': 'post',
-                    'data': parameters
+                    'type': 'post'
                 }
             ).done(function (result) {
-                $('#bookmarks-list').html(result);
+                $('#bookmarks-list').html(result.list);
+
+                if (result.isBookmarked) {
+                    $('.bookmark-this-page').addClass('is-bookmarked');
+                } else {
+                    $('.bookmark-this-page').removeClass('is-bookmarked');
+                }
             });
         });
+
     });
 })(jQuery);

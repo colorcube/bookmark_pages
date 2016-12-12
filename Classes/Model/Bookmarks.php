@@ -100,7 +100,7 @@ class Bookmarks {
     /**
      * Get Bookmark by given id
      *
-     * @param $id
+     * @param string $id
      * @return Bookmark|mixed
      */
     public function getBookmark($id)
@@ -110,9 +110,21 @@ class Bookmarks {
 
 
     /**
+     * Check if a given bookmark is stored already
+     *
+     * @param Bookmark $bookmark
+     * @return boolean
+     */
+    public function bookmarkExists(Bookmark $bookmark)
+    {
+        return isset($this->bookmarks[$bookmark->getId()]);
+    }
+
+
+    /**
      * Remove bookmark by given id
      *
-     * @param $id
+     * @param string $id
      */
     public function removeBookmark($id)
     {

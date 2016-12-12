@@ -33,18 +33,12 @@ class BookmarksController extends ActionController
     {
         $bookmarks = new Bookmarks();
 
-        // testing
-        // $bookmark = new Bookmark('http://www.google.de', 'Google', $pid=null, $parameter=null);
-        // $bookmarks->addBookmark($bookmark);
-        
-        // $bookmark = new Bookmark('', 'One', 1, 'abc');
-        // $bookmarks->addBookmark($bookmark);
-        
-        // $bookmark = Bookmark::createFromCurrent();
-        // $bookmarks->addBookmark($bookmark);
-        // $bookmarks->persist();
-        
+        // check if we bookmarked the current page
+        $bookmark = Bookmark::createFromCurrent();
+        $isBookmarked = $bookmarks->bookmarkExists($bookmark);
+
         $this->view->assign('bookmarks', $bookmarks->getBookmarks());
+        $this->view->assign('isBookmarked', $isBookmarked);
     }
 
     /**
@@ -54,14 +48,17 @@ class BookmarksController extends ActionController
      */
     public function bookmarkAction()
     {
-        // use the parameter directly and ignore chash because url is detected and submitted by JS
-        $bookmark = Bookmark::createFromCurrent(GeneralUtility::_GP('url'));
+        // use the parameter directly and ignore chash because url is submitted by JS
+        $url = GeneralUtility::_GP('url');
+        $url = $url ? $url : null;
+
+        $bookmark = Bookmark::createFromCurrent($url);
 
         $bookmarks = new Bookmarks();
         $bookmarks->addBookmark($bookmark);
         $bookmarks->persist();
 
-        $this->view->assign('bookmarks', $bookmarks->getBookmarks());
+        $this->updateAndSendList($bookmarks);
     }
 
     /**
@@ -76,7 +73,36 @@ class BookmarksController extends ActionController
         $bookmarks = new Bookmarks();
         $bookmarks->removeBookmark($id);
         $bookmarks->persist();
+
+        $this->updateAndSendList($bookmarks);
+    }
+
+    /**
+     * This is for ajax requests
+     *
+     * @param Bookmarks $bookmarks
+     */
+    public function updateAndSendList(Bookmarks $bookmarks)
+    {
+        // build the html for the response
         $this->view->assign('bookmarks', $bookmarks->getBookmarks());
+        $listHtml = $this->view->render();
+
+
+        // check if we bookmarked the current page
+        $bookmark = Bookmark::createFromCurrent();
+        $isBookmarked = $bookmarks->bookmarkExists($bookmark);
+
+
+        // build the ajax response data
+        $response = [
+            'isBookmarked' => $isBookmarked,
+            'list' => $listHtml,
+        ];
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+        die();
     }
 
 }

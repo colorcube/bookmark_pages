@@ -8,6 +8,9 @@
 	<div id="bookmarks" class="bookmark-pages">
 		<h4>Favoriten</h4>
 
+		<f:comment>This will trigger js which add a class to all bookmark-this-page links on the page</f:comment>
+		<f:if condition="{isBookmarked}"><div id="is-bookmarked" style="display:none"></div></f:if>
+
 		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >Seite merken</a></p>
 
 		<ul id="bookmarks-list" class="menu vertical">
@@ -17,7 +20,7 @@
 
 	<f:comment>you may put this into your page template:</f:comment>
 	<div class="bookmark-pages">
-		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(extensionName: 'bookmarkpages', pluginName: 'Bookmarks', controller: 'Bookmarks', action: 'bookmark', contextRecord: 'currentPage')}" >Seite merken</a></p>
+		<p><a class="bookmark-ajax-submit bookmark-this-page" data-ajaxuri="{t:uri.ajaxAction(extensionName: 'bookmarkpages', pluginName: 'Bookmarks', controller: 'Bookmarks', action: 'bookmark', contextRecord: 'currentPage')}" >Seite merken</a></p>
 	</div>
 </f:section>
 

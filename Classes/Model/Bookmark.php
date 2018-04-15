@@ -16,9 +16,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  *
- *
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class Bookmark {
 
@@ -80,7 +77,7 @@ class Bookmark {
     public static function createFromCurrent($url = null)
     {
         if ($url === null) {
-            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' ) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' ) {
                 //request is ajax
                 $url = GeneralUtility::getIndpEnv('HTTP_REFERER');
             } else {
@@ -239,7 +236,7 @@ class Bookmark {
 
 
     /**
-     * Get global frontend user
+     *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
     protected static function getFrontend()

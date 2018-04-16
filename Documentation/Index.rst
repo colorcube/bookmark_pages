@@ -27,7 +27,7 @@ Bookmark Pages
 		Provides bookmarks functionality of local pages for logged in frontend users
 
 	:Keywords:
-		fun
+		bookmark page
 
 	:Copyright:
 		2016-2018

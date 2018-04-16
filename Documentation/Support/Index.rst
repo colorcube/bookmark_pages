@@ -20,11 +20,6 @@ Bug Tracker
 
 For bug reports and feature requests: https://github.com/colorcube/bookmark_pages/issues
 
-Sponsoring
-----------
-
-If you need a feature which is not yet implemented, feel free to contact me anytime!
-
 Commercial support
 ------------------
 

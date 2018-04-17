@@ -4,7 +4,7 @@
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Bookmark Pages',
     'description' => 'Provides bookmarks functionality of local pages for logged in frontend users.',
-    'category' => 'Plugins',
+    'category' => 'plugin',
     'author' => 'René Fritz',
     'author_email' => 'r.fritz@colorcube.de',
     'author_company' => 'Colorcube',

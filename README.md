@@ -24,10 +24,6 @@ In your Composer based TYPO3 project root, just do `composer require colorcube/b
 
 Download and install the extension with the extension manager module.
 
-## Remarks
-
-The magic happens on every page reload!
-
 ## Contribute
 
 - Send pull requests to the repository. <https://github.com/colorcube/bookmark_pages>

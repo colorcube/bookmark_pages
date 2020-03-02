@@ -31,7 +31,6 @@
         }
     },
     "replace": {
-        "bookmark-pages": "self.version",
         "typo3-ter/bookmark-pages": "self.version"
     },
     "extra": {

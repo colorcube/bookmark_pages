@@ -8,7 +8,7 @@ TypoScript and fluid templates are just examples. Adapt it to your needs.
 
 In the example templates there's nothing shown if the user is not logged in.
 
-Further information: https://docs.typo3.org/typo3cms/extensions/bookmark_pages/
+Further information: https://docs.typo3.org/p/colorcube/bookmark-pages/master/en-us/
 
 ### Dependencies
 

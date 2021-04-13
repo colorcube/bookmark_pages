@@ -11,7 +11,7 @@
 		<f:comment>This will trigger js which add a class to all bookmark-this-page links on the page</f:comment>
 		<f:if condition="{isBookmarked}"><div id="is-bookmarked" style="display:none"></div></f:if>
 
-		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >bookmarked pages</a></p>
+		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >bookmark page</a></p>
 
 		<ul id="bookmarks-list" class="menu vertical">
 			<f:render partial="List"  arguments="{_all}" />

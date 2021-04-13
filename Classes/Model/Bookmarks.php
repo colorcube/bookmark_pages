@@ -13,7 +13,9 @@ namespace Colorcube\BookmarkPages\Model;
  */
 
 
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Provide access to a list of Bookmark
@@ -149,10 +151,19 @@ class Bookmarks {
              */
             $bookMarksXml = GeneralUtility::array2xml($bookmarks);
 
-            $this->getDatabaseConnection()->exec_UPDATEquery(
-                $this->getUser()->user_table,
-                $this->getUser()->userid_column . '=' . (int)$this->getUser()->user[$this->getUser()->userid_column],
-                [self::BOOKMARKS_COLUMN => $bookMarksXml]);
+            /** @var  QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->getUser()->user_table);
+            $queryBuilder
+                ->update($this->getUser()->user_table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $this->getUser()->userid_column,
+                        $queryBuilder->createNamedParameter((int)$this->getUser()->user[$this->getUser()->userid_column], \PDO::PARAM_INT)
+                    )
+                )
+                ->set(self::BOOKMARKS_COLUMN, $bookMarksXml)
+                ->execute();
 
             $this->changeFlag = false;
         }
@@ -166,15 +177,5 @@ class Bookmarks {
     protected function getUser()
     {
         return $GLOBALS["TSFE"]->fe_user;
-    }
-
-
-    /**
-     * Get global database connection
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
     }
 }

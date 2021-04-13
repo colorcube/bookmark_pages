@@ -21,9 +21,9 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
-        "typo3/cms-core": "^6.2 || ^7.6 || ^8.7",
-        "helhum/typoscript-rendering": "^2.0"
+        "php": ">=7.0",
+        "typo3/cms-core": "^10.4",
+        "helhum/typoscript-rendering": "^2.3.1"
     },
     "autoload": {
         "psr-4": {
@@ -36,6 +36,9 @@
     "extra": {
         "typo3/cms": {
             "extension-key": "bookmark_pages"
+        },
+        "branch-alias": {
+            "dev-master": "2.x-dev"
         }
     }
 }

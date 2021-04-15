@@ -178,4 +178,20 @@ class Bookmarks {
     {
         return $GLOBALS["TSFE"]->fe_user;
     }
+
+
+    /**
+     * Get bookmarks for local storage in browser
+     */
+    public function getLocalBookmarks(): array
+    {
+        $result = [];
+        foreach($this->bookmarks as $bookmark) {
+            $result[$bookmark->getPid()] = [
+                'url' => $bookmark->getUrl(),
+                'parameter' => $bookmark->getParameter()
+            ];
+        }
+        return $result;
+    }
 }

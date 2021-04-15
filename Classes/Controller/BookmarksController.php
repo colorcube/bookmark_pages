@@ -34,8 +34,11 @@ class BookmarksController extends ActionController
         $bookmark = Bookmark::createFromCurrent();
         $isBookmarked = $bookmarks->bookmarkExists($bookmark);
 
-        $this->view->assign('bookmarks', $bookmarks->getBookmarks());
-        $this->view->assign('isBookmarked', $isBookmarked);
+        $this->view->assignMultiple([
+            'bookmarks' => $bookmarks->getBookmarks(),
+            'isBookmarked' => $isBookmarked,
+            'pageUid' => $GLOBALS['TSFE']->page['uid']
+        ]);
     }
 
     /**
@@ -74,18 +77,24 @@ class BookmarksController extends ActionController
         $this->updateAndSendList($bookmarks);
     }
 
-    public function listEntriesAction()
+    /**
+     * Action to get bookmark list
+     *
+     * @param array $clientBookmarks
+     */
+    public function listEntriesAction($clientBookmarks = [])
     {
         $bookmarks = new Bookmarks();
-        $this->updateAndSendList($bookmarks);
+        $this->updateAndSendList($bookmarks, $clientBookmarks);
     }
 
     /**
      * This is for ajax requests
      *
      * @param Bookmarks $bookmarks
+     * @param array $clientBookmarks
      */
-    public function updateAndSendList(Bookmarks $bookmarks)
+    public function updateAndSendList(Bookmarks $bookmarks, array $clientBookmarks = [])
     {
         // build the html for the response
         $this->view->assign('bookmarks', $bookmarks->getBookmarks());
@@ -97,10 +106,16 @@ class BookmarksController extends ActionController
         $isBookmarked = $bookmarks->bookmarkExists($bookmark);
 
 
+        // get data for local storage
+        $localBookmarks = $bookmarks->getLocalBookmarks();
+
+
         // build the ajax response data
         $response = [
             'isBookmarked' => $isBookmarked,
             'list' => $listHtml,
+            'localBookmarks' => $localBookmarks,
+            'clientBookmarks' => $clientBookmarks
         ];
 
         header('Content-Type: application/json');

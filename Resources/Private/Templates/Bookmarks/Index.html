@@ -5,7 +5,9 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-	<div id="bookmarks" class="bookmark-pages" data-list-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}">
+	<div id="bookmarks" class="bookmark-pages" data-list-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
+		 data-pid="{pageUid}">
+
 		<h4>Bookmarks</h4>
 		<p><a class="bookmark-ajax-submit bookmark-this-page" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >bookmark page</a></p>
 

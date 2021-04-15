@@ -1,10 +1,19 @@
 (function ($) {
-    $(function () {
+    /**
+     * Ajax callback function to update the bookmarks list and the links to bookmark a page.
+     *
+     * @param result Ajax result object with properties list and isBookmarked
+     */
+    function updateList (result) {
+        $('#bookmarks-list').html(result.list);
 
-        if ( $( "#is-bookmarked" ).length ) {
-            // add a class to all bookmark links on the page because somewhere is a #is-bookmarked flag in html
+        if (result.isBookmarked) {
             $('.bookmark-this-page').addClass('is-bookmarked');
+        } else {
+            $('.bookmark-this-page').removeClass('is-bookmarked');
         }
+    }
+    $(function () {
 
         // doing it this way:
         // $('.bookmark-ajax-submit').on('click', function (event) {
@@ -19,16 +28,11 @@
                 {
                     'type': 'post'
                 }
-            ).done(function (result) {
-                $('#bookmarks-list').html(result.list);
-
-                if (result.isBookmarked) {
-                    $('.bookmark-this-page').addClass('is-bookmarked');
-                } else {
-                    $('.bookmark-this-page').removeClass('is-bookmarked');
-                }
-            });
+            ).done(updateList);
         });
+
+        // Load the list
+        $.ajax($('#bookmarks').data('list-ajaxuri'), { 'type': 'post' }).done(updateList);
 
     });
 })(jQuery);

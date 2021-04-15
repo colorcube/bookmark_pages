@@ -5,17 +5,11 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-	<div id="bookmarks" class="bookmark-pages">
+	<div id="bookmarks" class="bookmark-pages" data-list-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}">
 		<h4>Bookmarks</h4>
+		<p><a class="bookmark-ajax-submit bookmark-this-page" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >bookmark page</a></p>
 
-		<f:comment>This will trigger js which add a class to all bookmark-this-page links on the page</f:comment>
-		<f:if condition="{isBookmarked}"><div id="is-bookmarked" style="display:none"></div></f:if>
-
-		<p><a class="bookmark-ajax-submit" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >bookmark page</a></p>
-
-		<ul id="bookmarks-list" class="menu vertical">
-			<f:render partial="List"  arguments="{_all}" />
-		</ul>
+		<ul id="bookmarks-list" class="menu vertical"><f:comment>List is loaded asynchronously</f:comment></ul>
 	</div>
 
 	<f:comment>you may put this into your page template:</f:comment>

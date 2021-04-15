@@ -11,11 +11,11 @@ defined('TYPO3') or die('Access denied.');
             'Colorcube.BookmarkPages',
             'Bookmarks',
             array(
-                'Bookmarks' => 'index, bookmark, delete',
+                'Bookmarks' => 'index, bookmark, delete, listEntries',
             ),
             // non-cacheable actions
             array(
-                'Bookmarks' => 'index, bookmark, delete',
+                'Bookmarks' => 'bookmark, delete, listEntries',
             )
         );
     } else {
@@ -23,10 +23,10 @@ defined('TYPO3') or die('Access denied.');
             'BookmarkPages',
             'Bookmarks',
             [
-                \Colorcube\BookmarkPages\Controller\BookmarksController::class => 'index, bookmark, delete'
+                \Colorcube\BookmarkPages\Controller\BookmarksController::class => 'index, bookmark, delete, listEntries'
             ],
             [
-                \Colorcube\BookmarkPages\Controller\BookmarksController::class => 'index, bookmark, delete'
+                \Colorcube\BookmarkPages\Controller\BookmarksController::class => 'bookmark, delete, listEntries'
             ]
         );
     }

@@ -74,6 +74,12 @@ class BookmarksController extends ActionController
         $this->updateAndSendList($bookmarks);
     }
 
+    public function listEntriesAction()
+    {
+        $bookmarks = new Bookmarks();
+        $this->updateAndSendList($bookmarks);
+    }
+
     /**
      * This is for ajax requests
      *

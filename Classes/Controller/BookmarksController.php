@@ -29,15 +29,11 @@ class BookmarksController extends ActionController
     public function indexAction()
     {
         $bookmarks = new Bookmarks();
-
-        // check if we bookmarked the current page
         $bookmark = Bookmark::createFromCurrent();
-        $isBookmarked = $bookmarks->bookmarkExists($bookmark);
-
         $this->view->assignMultiple([
             'bookmarks' => $bookmarks->getBookmarks(),
-            'isBookmarked' => $isBookmarked,
-            'pageUid' => $GLOBALS['TSFE']->page['uid']
+            'isBookmarked' => $bookmarks->bookmarkExists($bookmark),
+            'id' => $bookmark->getId()
         ]);
     }
 
@@ -68,12 +64,13 @@ class BookmarksController extends ActionController
      *
      * @param string $id
      */
-    public function deleteAction($id)
+    public function deleteAction($id = '')
     {
         $bookmarks = new Bookmarks();
-        $bookmarks->removeBookmark($id);
-        $bookmarks->persist();
-
+        if ($id) {
+            $bookmarks->removeBookmark($id);
+            $bookmarks->persist();
+        }
         $this->updateAndSendList($bookmarks);
     }
 

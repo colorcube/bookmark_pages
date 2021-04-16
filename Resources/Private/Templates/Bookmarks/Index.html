@@ -1,23 +1,29 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	  xmlns:t="http://typo3.org/ns/Helhum/TyposcriptRendering/ViewHelpers" data-namespace-typo3-fluid="true">
+<html data-namespace-typo3-fluid="true"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xsd.helmut-hummel.de/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:t="http://typo3.org/ns/Helhum/TyposcriptRendering/ViewHelpers">
 
-<f:layout name="Default" />
+<f:layout name="Default"/>
 
 <f:section name="main">
-	<div id="bookmarks" class="bookmark-pages" data-list-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
-		 data-pid="{pageUid}">
+    <div class="bookmark-pages" data-add-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}"
+         data-id="{id}"
+         data-remove-ajaxuri="{t:uri.ajaxAction(action: 'delete')}"
+         data-update-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
+         id="bookmarks">
 
-		<h4>Bookmarks</h4>
-		<p><a class="bookmark-ajax-submit bookmark-this-page" data-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}" >bookmark page</a></p>
+        <h4>Bookmarks</h4>
+        <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);">bookmark page</a></p>
+        <ul class="menu vertical" id="bookmarks-list">
+            <f:comment>List is loaded asynchronously</f:comment>
+        </ul>
+    </div>
 
-		<ul id="bookmarks-list" class="menu vertical"><f:comment>List is loaded asynchronously</f:comment></ul>
-	</div>
-
-	<f:comment>you may put this into your page template:</f:comment>
-	<div class="bookmark-pages">
-		<p><a class="bookmark-ajax-submit bookmark-this-page" data-ajaxuri="{t:uri.ajaxAction(extensionName: 'bookmarkpages', pluginName: 'Bookmarks', controller: 'Bookmarks', action: 'bookmark', contextRecord: 'currentPage')}" >bookmark page</a></p>
-	</div>
+    <f:comment>you may put this into your page template:</f:comment>
+    <div class="bookmark-pages">
+        <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);">Bookmark page in templates</a></p>
+        <p><a class="bookmark-ajax-submit remove-this-page" href="javascript:void(0);">Remove page from bookmark</a></p>
+    </div>
 </f:section>
 
 </html>

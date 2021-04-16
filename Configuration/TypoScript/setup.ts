@@ -4,6 +4,10 @@ plugin.tx_bookmarkpages {
 		partialRootPaths.10 = {$plugin.tx_bookmarkpages.view.partialRootPath}
 		layoutRootPaths.10 = {$plugin.tx_bookmarkpages.view.layoutRootPath}
 	}
+	settings {
+		storeLocal = {$plugin.tx_bookmarkpages.settings.storeLocal}
+		localStorageTTL = {$plugin.tx_bookmarkpages.settings.localStorageTTL}
+	}
 }
 
 page.includeJSFooterlibs {

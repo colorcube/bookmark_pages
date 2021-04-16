@@ -5,7 +5,7 @@
 
 <f:for as="bookmark" each="{bookmarks}">
     <li>
-        <f:link.external title="{bookmark.title}" uri="{bookmark.url}">{bookmark.title}</f:link.external>
+        <f:link.external class="bookmark-link" title="{bookmark.title}" uri="{bookmark.url}">{bookmark.title}</f:link.external>
         <a class="action-button bookmark-ajax-submit" data-remove="{bookmark.id}" href="javascript:void(0);">&times;</a>
     </li>
 </f:for>

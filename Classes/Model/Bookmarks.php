@@ -187,10 +187,7 @@ class Bookmarks {
     {
         $result = [];
         foreach($this->bookmarks as $bookmark) {
-            $result[$bookmark->getPid()] = [
-                'url' => $bookmark->getUrl(),
-                'parameter' => $bookmark->getParameter()
-            ];
+            $result[] = $bookmark->toArray();
         }
         return $result;
     }

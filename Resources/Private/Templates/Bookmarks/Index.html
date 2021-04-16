@@ -8,8 +8,10 @@
 <f:section name="main">
     <div class="bookmark-pages" data-add-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}"
          data-id="{id}"
+         data-bookmark='{bookmark -> f:format.json()}'
          data-remove-ajaxuri="{t:uri.ajaxAction(action: 'delete')}"
          data-update-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
+         data-settings='{settings -> f:format.json()}'
          id="bookmarks">
 
         <h4>Bookmarks</h4>
@@ -17,6 +19,9 @@
         <ul class="menu vertical" id="bookmarks-list">
             <f:comment>List is loaded asynchronously</f:comment>
         </ul>
+        <template id="bookmark-template">
+            <f:render partial="List" arguments="{bookmarks: {0: bookmark}}" />
+        </template>
     </div>
 
     <f:comment>you may put this into your page template:</f:comment>

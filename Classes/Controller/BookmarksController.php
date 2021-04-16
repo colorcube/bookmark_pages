@@ -32,6 +32,7 @@ class BookmarksController extends ActionController
         $bookmark = Bookmark::createFromCurrent();
         $this->view->assignMultiple([
             'bookmarks' => $bookmarks->getBookmarks(),
+            'bookmark' => $bookmark->toArray(),
             'isBookmarked' => $bookmarks->bookmarkExists($bookmark),
             'id' => $bookmark->getId()
         ]);

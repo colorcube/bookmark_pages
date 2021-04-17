@@ -28,13 +28,9 @@ class BookmarksController extends ActionController
      */
     public function indexAction()
     {
-        $bookmarks = new Bookmarks();
         $bookmark = Bookmark::createFromCurrent();
         $this->view->assignMultiple([
-            'bookmarks' => $bookmarks->getBookmarks(),
-            'bookmark' => $bookmark->toArray(),
-            'isBookmarked' => $bookmarks->bookmarkExists($bookmark),
-            'id' => $bookmark->getId()
+            'bookmark' => $bookmark->toArray()
         ]);
     }
 
@@ -42,8 +38,10 @@ class BookmarksController extends ActionController
      * Adds the current page as bookmark and renders/returns updated list as html
      *
      * This is meant to be called by ajax (typoscript_rendering)
+     *
+     * @param array $localBookmarks
      */
-    public function bookmarkAction()
+    public function bookmarkAction($localBookmarks = [])
     {
         // use the parameter directly and ignore chash because url is submitted by JS
         $url = GeneralUtility::_GP('url');
@@ -52,6 +50,7 @@ class BookmarksController extends ActionController
         $bookmark = Bookmark::createFromCurrent($url);
 
         $bookmarks = new Bookmarks();
+        $bookmarks->merge($localBookmarks);
         $bookmarks->addBookmark($bookmark);
         $bookmarks->persist();
 
@@ -64,10 +63,12 @@ class BookmarksController extends ActionController
      * This is meant to be called by ajax (typoscript_rendering)
      *
      * @param string $id
+     * @param array $localBookmarks
      */
-    public function deleteAction($id = '')
+    public function deleteAction($id = '', $localBookmarks = [])
     {
         $bookmarks = new Bookmarks();
+        $bookmarks->merge($localBookmarks);
         if ($id) {
             $bookmarks->removeBookmark($id);
             $bookmarks->persist();
@@ -78,42 +79,30 @@ class BookmarksController extends ActionController
     /**
      * Action to get bookmark list
      *
-     * @param array $clientBookmarks
+     * @param array $localBookmarks
      */
-    public function listEntriesAction($clientBookmarks = [])
+    public function listEntriesAction($localBookmarks = [])
     {
         $bookmarks = new Bookmarks();
-        $this->updateAndSendList($bookmarks, $clientBookmarks);
+        $bookmarks->merge($localBookmarks);
+        $this->updateAndSendList($bookmarks, $localBookmarks);
     }
 
     /**
      * This is for ajax requests
      *
      * @param Bookmarks $bookmarks
-     * @param array $clientBookmarks
      */
-    public function updateAndSendList(Bookmarks $bookmarks, array $clientBookmarks = [])
+    public function updateAndSendList(Bookmarks $bookmarks)
     {
-        // build the html for the response
-        $this->view->assign('bookmarks', $bookmarks->getBookmarks());
-        $listHtml = $this->view->render();
-
-
         // check if we bookmarked the current page
         $bookmark = Bookmark::createFromCurrent();
         $isBookmarked = $bookmarks->bookmarkExists($bookmark);
 
-
-        // get data for local storage
-        $localBookmarks = $bookmarks->getLocalBookmarks();
-
-
         // build the ajax response data
         $response = [
             'isBookmarked' => $isBookmarked,
-            'list' => $listHtml,
-            'localBookmarks' => $localBookmarks,
-            'clientBookmarks' => $clientBookmarks
+            'bookmarks' => $bookmarks->getLocalBookmarks()
         ];
 
         header('Content-Type: application/json');

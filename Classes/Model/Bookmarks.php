@@ -179,6 +179,17 @@ class Bookmarks {
         return $GLOBALS["TSFE"]->fe_user;
     }
 
+    /**
+     * Merge bookmarks into the current ones.
+     *
+     * @param $bookmarks
+     * @return array|Bookmark[]
+     */
+    public function merge($bookmarks) {
+        // @todo Add merge functionality
+        return $this->getBookmarks();
+    }
+
 
     /**
      * Get bookmarks for local storage in browser

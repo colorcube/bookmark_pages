@@ -1,13 +1,30 @@
 (function ($) {
     let
-        settings = {
-            // If set bookmarks are stored locally in localStorage
-            storeLocal: 10,
-            // Time in seconds during which the bookmarks are valid hence not queried from server
-            localStorageTTL: 13600
-        },
         // Bookmark from current page
         bookmark = {};
+    class Settings {
+        // If set bookmarks are stored locally in localStorage
+        _storeLocal = false;
+        // Time in seconds during which the bookmarks are valid hence not queried from server
+        _localStorageTTL = 3600;
+        static init (settings) {
+            if (typeof settings !== 'object') {
+                return;
+            }
+            if (settings.storeLocal !== 'undefined') {
+                self._storeLocal = Boolean(parseInt(settings.storeLocal));
+            }
+            if (settings.localStorageTTL !== 'undefined') {
+                self._localStorageTTL = parseInt(settings.localStorageTTL);
+            }
+        }
+        static get storeLocal() {
+            return self._storeLocal;
+        }
+        static get localStorageTTL() {
+            return self._localStorageTTL
+        }
+    }
     class BookmarkStorage {
         /**
          * @return JSON object from bookmarks list held in local storage from browser
@@ -20,7 +37,7 @@
          * @param bookmarks Array from bookmarks
          */
         static set list(bookmarks) {
-            if (parseInt(settings.storeLocal)) {
+            if (Settings.storeLocal) {
                 localStorage.setItem('txBookmarkPagesBookmarks', JSON.stringify(bookmarks));
                 localStorage.setItem('txBookmarkPagesTimestamp', Date.now());
             }
@@ -32,7 +49,7 @@
         static get isOutdated() {
             let timestamp = localStorage.getItem('txBookmarkPagesTimestamp');
             if (timestamp) {
-                return ((Date.now() - timestamp) / 1000) > settings.localStorageTTL;
+                return ((Date.now() - timestamp) / 1000) > Settings.localStorageTTL;
             }
             return true;
         }
@@ -45,7 +62,8 @@
          * @param ajaxResult Object with properties `list` and `isBookmarked`
          */
         static listQueryHandler(ajaxResult) {
-            $('#bookmarks-list').html(ajaxResult.list);
+            // @todo validate ajaxResult.bookmarks
+            $('#bookmarks-list').html(BookmarksAssistant.initList(ajaxResult.bookmarks));
 
             if (ajaxResult.isBookmarked) {
                 $('.bookmark-this-page').addClass('is-bookmarked');
@@ -53,9 +71,7 @@
                 $('.bookmark-this-page').removeClass('is-bookmarked');
             }
 
-            if (typeof ajaxResult.localBookmarks === 'object') {
-                BookmarkStorage.list = ajaxResult.localBookmarks;
-            }
+            BookmarkStorage.list = ajaxResult.bookmarks;
         }
         static ajax(url, data = {}) {
             data = {...data, 'tx_bookmarkpages_bookmarks[localBookmarks]': BookmarkStorage.list}
@@ -65,9 +81,8 @@
                 data: data
             }).done(BookmarksAssistant.listQueryHandler);
         }
-        static initListFromStorage() {
-            let bookmarks = BookmarkStorage.list,
-                $bookmarksList = $('#bookmarks-list'),
+        static initList(bookmarks) {
+            let $bookmarksList = $('#bookmarks-list'),
                 $listItem = $($('#bookmark-template').html().trim());
             $bookmarksList.empty();
             for (const bookmark of bookmarks) {
@@ -75,16 +90,21 @@
                 $('.bookmark-link', $item)
                     .attr('title', bookmark.title)
                     .attr('href', bookmark.url)
-                    .val(bookmark.title);
+                    .text(bookmark.title);
                 $('.bookmark-ajax-submit', $item).data('remove', bookmark.id)
                 $bookmarksList.append($item);
             }
+        }
+        static initListFromStorage() {
+            let bookmarks = BookmarkStorage.list;
+            // @todo validate bookmarks
+            BookmarksAssistant.initList(bookmarks);
         }
     }
 
     let bookmarks = new class {
         init() {
-            if (settings.storeLocal && !BookmarkStorage.isOutdated) {
+            if (Settings.storeLocal && !BookmarkStorage.isOutdated) {
                 BookmarksAssistant.initListFromStorage();
             } else {
                 BookmarksAssistant.ajax($('#bookmarks').data('update-ajaxuri'));
@@ -112,14 +132,14 @@
             if ($this.hasClass('bookmark-this-page')){
                 bookmarks.add();
             } else if ($this.hasClass('remove-this-page')) {
-                bookmarks.remove($('#bookmarks').data('id'))
+                bookmarks.remove(bookmark.id)
             } else if (removeID) {
                 bookmarks.remove(removeID)
             }
         });
 
         // Initialise the bookmarks
-        Object.assign(settings, $('#bookmarks').data('settings'));
+        Settings.init($('#bookmarks').data('settings'));
         bookmark = $('#bookmarks').data('bookmark');
         bookmarks.init();
     });

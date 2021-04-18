@@ -85,7 +85,7 @@ class BookmarksController extends ActionController
     {
         $bookmarks = new Bookmarks();
         $bookmarks->merge($localBookmarks);
-        $this->updateAndSendList($bookmarks, $localBookmarks);
+        $this->updateAndSendList($bookmarks);
     }
 
     /**

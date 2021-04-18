@@ -85,7 +85,7 @@
             let $bookmarksList = $('#bookmarks-list'),
                 $listItem = $($('#bookmark-template').html().trim());
             $bookmarksList.empty();
-            for (const bookmark of bookmarks) {
+            Object.values(bookmarks).forEach(bookmark => {
                 let $item = $listItem.clone();
                 $('.bookmark-link', $item)
                     .attr('title', bookmark.title)
@@ -93,7 +93,7 @@
                     .text(bookmark.title);
                 $('.bookmark-ajax-submit', $item).data('remove', bookmark.id)
                 $bookmarksList.append($item);
-            }
+            });
         }
         static initListFromStorage() {
             let bookmarks = BookmarkStorage.list;

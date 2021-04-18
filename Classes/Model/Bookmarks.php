@@ -186,7 +186,16 @@ class Bookmarks {
      * @return array|Bookmark[]
      */
     public function merge($bookmarks) {
-        // @todo Add merge functionality
+        $bookmarksChanged = false;
+        foreach($bookmarks as $id => $bookmark) {
+            if (!isset($this->bookmarks[$id])) {
+                $bookmarksChanged = true;
+                $this->bookmarks[$id] = new Bookmark($bookmark);
+            }
+        }
+        if ($bookmarksChanged) {
+            $this->persist();
+        }
         return $this->getBookmarks();
     }
 
@@ -198,7 +207,7 @@ class Bookmarks {
     {
         $result = [];
         foreach($this->bookmarks as $bookmark) {
-            $result[] = $bookmark->toArray();
+            $result[$bookmark->getId()] = $bookmark->toArray();
         }
         return $result;
     }

@@ -18,5 +18,3 @@ page.includeJSFooterlibs {
 		external = 1
 	}
 }
-
-page.includeJSFooter.bookmark_pages = EXT:bookmark_pages/Resources/Public/Scripts/JavaScript/bookmark_pages.js

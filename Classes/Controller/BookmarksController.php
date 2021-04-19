@@ -102,7 +102,7 @@ class BookmarksController extends ActionController
         // build the ajax response data
         $response = [
             'isBookmarked' => $isBookmarked,
-            'bookmarks' => $bookmarks->getLocalBookmarks()
+            'bookmarks' => $bookmarks->getBookmarksForLocalStorage()
         ];
 
         header('Content-Type: application/json');

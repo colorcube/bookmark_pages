@@ -14,6 +14,7 @@ namespace Colorcube\BookmarkPages\Model;
 
 
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 
@@ -180,6 +181,40 @@ class Bookmarks {
     }
 
     /**
+     * @return array
+     */
+    private function getAccessibleBookmarks()
+    {
+        $bookmarks = $this->getBookmarks();
+
+        // Create an array association the page uid with the bookmark id (uid => id)
+        $pageMap = array_flip(array_map(static function ($bookmark) {
+            return (int) $bookmark->getPid();
+        }, $bookmarks));
+
+        // Get accessible pages
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class));
+        $pages = $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where($queryBuilder->expr()->in('uid', array_keys($pageMap)))
+            ->execute()
+            ->fetchAll();
+
+        // Collect accessible bookmarks
+        $accessibleBookmarks = [];
+        foreach($pages as $page) {
+            if (isset($pageMap[$page['uid']])) {
+                $accessibleBookmarks[$pageMap[$page['uid']]] = $bookmarks[$pageMap[$page['uid']]];
+            }
+        }
+
+        return $accessibleBookmarks;
+    }
+
+    /**
      * Merge bookmarks into the current ones.
      *
      * @param $bookmarks
@@ -203,10 +238,10 @@ class Bookmarks {
     /**
      * Get bookmarks for local storage in browser
      */
-    public function getLocalBookmarks(): array
+    public function getBookmarksForLocalStorage(): array
     {
         $result = [];
-        foreach($this->bookmarks as $bookmark) {
+        foreach($this->getAccessibleBookmarks() as $bookmark) {
             $result[$bookmark->getId()] = $bookmark->toArray();
         }
         return $result;

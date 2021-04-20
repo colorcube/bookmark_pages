@@ -14,7 +14,7 @@ The plugin output doesn't look very cute after install. It is necessary to adopt
 
 .. tip::
 
-    Keep in mind that the plugin is silent unless you're logged in.
+   Have a look at the comments in the example template.
 
 
 Make it work
@@ -42,7 +42,7 @@ Login and you should see some output. On the introduction package it looks like 
 
 .. figure:: ../Images/screenshot-fe.png
 
-    The login box is not part of this extension.
+   The login box is not part of this extension.
 
 
 Customization
@@ -52,11 +52,14 @@ Customization
 1. TypoScript and Templates
 ---------------------------
 
-
 You may just copy the needed parts to your site package.
 
 The fluid template paths can be configured as usual using TypoScript. Have a look into the TypoScript template
 (look for plugin.tx_bookmarkpages.view)
+
+The bookmarks might be stored in the browsers local storage allowing users to bookmark pages without being registered
+on the site. Storing the bookmarks locally as well safes unnecessary server requests. The feature can be enabled
+through the constants editor.
 
 
 2. JavaScript and JQuery
@@ -68,7 +71,7 @@ The provided example uses JQuery for ajax requests. JQuery is included by TypoSc
 
    page.includeJSFooterlibs.bookmark_pages_jquery >
 
-If you don't use JQuery you have to adapt the JavaScript which is used for the bookmark button.
+If you don't use JQuery you have to adapt the JavaScript.
 Have a look into Resources/Public/Scripts/JavaScript/bookmark_pages.js
 
 
@@ -81,16 +84,16 @@ in a fluid template like this:
 
 .. code-block:: html
 
-    <f:cObject typoscriptObjectPath="tt_content.list.20.bookmarkpages_bookmarks"/>
+   <f:cObject typoscriptObjectPath="tt_content.list.20.bookmarkpages_bookmarks"/>
 
 
 Of course you want a bookmark button on every page. This can be done in fluid like this:
 
 .. code-block:: html
 
-    <a class="bookmark-ajax-submit bookmark-this-page"
-    data-ajaxuri="{t:uri.ajaxAction(extensionName: 'bookmarkpages', pluginName: 'Bookmarks', controller: 'Bookmarks', action: 'bookmark', contextRecord: 'currentPage')}"
-    >bookmark page</a>
+   <div class="bookmark-pages">
+      <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);">Bookmark page in templates</a></p>
+   </div>
 
 You can place the snippet in any template not just the plugin templates.
 

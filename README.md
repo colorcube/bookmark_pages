@@ -1,6 +1,7 @@
 # Bookmark Pages TYPO3 Extension
 
-This is a TYPO3 extension that provides bookmarks functionality of local pages for logged in frontend users.
+This is a TYPO3 extension that provides bookmarks functionality. In case the use from the browsers local storage is
+disabled just logged in frontend users can bookmark pages.
 
 ## Usage
 
@@ -12,13 +13,13 @@ Further information: https://docs.typo3.org/p/colorcube/bookmark-pages/master/en
 
 ### Dependencies
 
-* TYPO3 6.2 - 8.7
+* TYPO3 10.4
 
 ### Installation
 
 #### Installation using Composer
 
-In your Composer based TYPO3 project root, just do `composer require colorcube/bookmark-pages`. 
+In your Composer based TYPO3 project root, just do `composer require colorcube/bookmark-pages`.
 
 #### Installation as extension from TYPO3 Extension Repository (TER)
 

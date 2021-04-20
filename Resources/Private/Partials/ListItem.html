@@ -4,6 +4,10 @@
       xmlns:t="http://typo3.org/ns/Helhum/TyposcriptRendering/ViewHelpers">
 
 <li>
+    <f:comment>
+        For the content to be substituted correctly the text link needs to have the class `bookmark-link`
+        and the remove item the data attribute `data-remove` assigned to.
+    </f:comment>
     <f:link.external class="bookmark-link" title="{bookmark.title}" uri="{bookmark.url}">{bookmark.title}</f:link.external>
     <a class="action-button bookmark-ajax-submit" data-remove="{bookmark.id}" href="javascript:void(0);">&times;</a>
 </li>

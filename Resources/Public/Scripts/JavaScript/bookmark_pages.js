@@ -67,7 +67,6 @@
          * @param ajaxResult Object with properties `list` and `isBookmarked`
          */
         listQueryHandler (ajaxResult) {
-            // @todo validate ajaxResult.bookmarks
             $('#bookmarks-list').html(this.initList(ajaxResult.bookmarks));
 
             if (ajaxResult.isBookmarked) {
@@ -102,7 +101,6 @@
         },
         initListFromStorage () {
             let bookmarks = storage.list;
-            // @todo validate bookmarks
             this.initList(bookmarks);
         }
     }

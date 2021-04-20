@@ -186,6 +186,9 @@ class Bookmarks {
     private function getAccessibleBookmarks()
     {
         $bookmarks = $this->getBookmarks();
+        if (!$bookmarks) {
+            return [];
+        }
 
         // Create an array association the page uid with the bookmark id (uid => id)
         $pageMap = array_flip(array_map(static function ($bookmark) {

@@ -40,6 +40,7 @@
             if (settings.storeLocal) {
                 localStorage.setItem('txBookmarkPagesBookmarks', JSON.stringify(bookmarks));
                 localStorage.setItem('txBookmarkPagesTimestamp', Date.now());
+                localStorage.setItem('txBookmarkPagesReload', '0');
             }
         },
 
@@ -47,11 +48,15 @@
          * @return {boolean}
          */
         get isOutdated() {
+            // Check storage age
+            let $expired = true;
             let timestamp = localStorage.getItem('txBookmarkPagesTimestamp');
             if (timestamp) {
-                return ((Date.now() - timestamp) / 1000) > settings.localStorageTTL;
+                $expired = ((Date.now() - timestamp) / 1000) > settings.localStorageTTL;
             }
-            return true;
+            // Check if a reload is requested
+            let $reloadRequested = Boolean(parseInt(localStorage.getItem('txBookmarkPagesReload')));
+            return $expired || $reloadRequested;
         }
     }
 

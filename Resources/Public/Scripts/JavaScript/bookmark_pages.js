@@ -57,25 +57,31 @@
             // Check if a reload is requested
             let $reloadRequested = Boolean(parseInt(localStorage.getItem('txBookmarkPagesReload')));
             return $expired || $reloadRequested;
+        },
+
+        containsBookmark (bookmark) {
+            return typeof this.list[bookmark.id] === 'object';
         }
     }
 
     const assistant = {
+        updateLinks () {
+            if (storage.containsBookmark(currentPage.bookmark)) {
+                $('.bookmark-this-page').addClass('is-bookmarked');
+            } else {
+                $('.bookmark-this-page').removeClass('is-bookmarked');
+            }
+        },
+
         /**
          * Ajax callback function to update the bookmarks list and the links to bookmark a page.
          *
          * @param ajaxResult Object with properties `list` and `isBookmarked`
          */
         listQueryHandler (ajaxResult) {
-            $('#bookmarks-list').html(this.initList(ajaxResult.bookmarks));
-
-            if (ajaxResult.isBookmarked) {
-                $('.bookmark-this-page').addClass('is-bookmarked');
-            } else {
-                $('.bookmark-this-page').removeClass('is-bookmarked');
-            }
-
+            this.initList(ajaxResult.bookmarks);
             storage.list = ajaxResult.bookmarks;
+            this.updateLinks();
         },
         ajax (url, data = {}) {
             data = {...data, 'tx_bookmarkpages_bookmarks[localBookmarks]': storage.list}
@@ -105,14 +111,23 @@
         }
     }
 
+    const currentPage = {
+        _bookmark: null,
+        init () {
+            this._bookmark = $('#bookmarks').data('bookmark');
+        },
+        get bookmark () {
+            return this._bookmark;
+        }
+    };
+
     const bookmarks = {
-        currentPageBookmark: null,
         $bookmarks: null,
         init () {
             this.$bookmarks = $('#bookmarks');
-            this.currentPageBookmark = this.$bookmarks.data('bookmark');
             if (settings.storeLocal && !storage.isOutdated) {
                 assistant.initListFromStorage();
+                assistant.updateLinks();
             } else {
                 assistant.ajax(this.$bookmarks.data('update-ajaxuri'));
             }
@@ -123,7 +138,7 @@
         remove (removeID) {
             assistant.ajax(
                 this.$bookmarks.data('remove-ajaxuri'),
-                {'tx_bookmarkpages_bookmarks[id]': removeID ?? this.currentPageBookmark.id}
+                {'tx_bookmarkpages_bookmarks[id]': removeID ?? currentPage.bookmark.id}
             );
         }
     }
@@ -150,6 +165,7 @@
 
         // Initialize the app
         settings.init();
+        currentPage.init();
         bookmarks.init();
     });
 })(jQuery);

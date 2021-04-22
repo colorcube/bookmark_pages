@@ -35,7 +35,7 @@ Include the TypoScript in your template record or your site package.
 2. Include Plugin
 -----------------
 
-Include the 'Bookmark Pages' plugin as content element. This is just for testing and not usually what you want.
+Include the `Bookmark Pages` plugin as content element. This is just for testing and not usually what you want.
 
 Login and you should see some output. On the introduction package it looks like this:
 
@@ -43,6 +43,9 @@ Login and you should see some output. On the introduction package it looks like 
 .. figure:: ../Images/screenshot-fe.png
 
    The login box is not part of this extension.
+
+The plugin might be inserted more than once on a page. In that case mark `Is complementary` under `Plugin Options`
+for all plugins except the first one.
 
 
 Customization

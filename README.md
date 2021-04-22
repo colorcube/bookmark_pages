@@ -29,3 +29,4 @@ Download and install the extension with the extension manager module.
 
 - Send pull requests to the repository. <https://github.com/colorcube/bookmark_pages>
 - Use the issue tracker for feedback and discussions. <https://github.com/colorcube/bookmark_pages/issues>
+

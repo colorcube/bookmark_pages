@@ -6,29 +6,42 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-    <div class="bookmark-pages"
-         data-settings='{settings -> f:format.json()}'
-         data-bookmark='{bookmark -> f:format.json()}'
-         data-add-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}"
-         data-remove-ajaxuri="{t:uri.ajaxAction(action: 'delete')}"
-         data-update-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
-         id="bookmarks">
+    <f:if condition="{settings.isComplementary as boolean}">
+        <f:then>
+            <div class="bookmark-pages">
+                <f:render section="BookmarkList" />
+            </div>
+        </f:then>
+        <f:else>
+            <div class="bookmark-pages"
+                 data-settings='{settings -> f:format.json()}'
+                 data-bookmark='{bookmark -> f:format.json()}'
+                 data-add-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}"
+                 data-remove-ajaxuri="{t:uri.ajaxAction(action: 'delete')}"
+                 data-update-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
+                 id="bookmarks">
 
-        <h4>Bookmarks</h4>
-        <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);" title="{f:translate(key: 'bookmarkThisPage')}">{f:translate(key: 'bookmarkThisPage')}</a></p>
-        <ul class="menu vertical bookmarks-list">
-            <f:comment>List is loaded asynchronously</f:comment>
-        </ul>
-        <template id="bookmark-template">
-            <f:render partial="ListItem" arguments="{bookmark: bookmark}" />
-        </template>
-    </div>
+                <f:render section="BookmarkList" />
+                <template id="bookmark-template">
+                    <f:render partial="ListItem" arguments="{bookmark: bookmark}" />
+                </template>
+            </div>
 
-    <f:comment>you may put this into your page template:</f:comment>
-    <div class="bookmark-pages">
-        <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);">Bookmark page in templates</a></p>
-        <p><a class="bookmark-ajax-submit remove-this-page" href="javascript:void(0);">Remove page from bookmark</a></p>
-    </div>
+            <f:comment>you may put this into your page template:</f:comment>
+            <div class="bookmark-pages">
+                <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);">Bookmark page in templates</a></p>
+                <p><a class="bookmark-ajax-submit remove-this-page" href="javascript:void(0);">Remove page from bookmark</a></p>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+
+<f:section name="BookmarkList">
+    <h4>Bookmarks</h4>
+    <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);" title="{f:translate(key: 'bookmarkThisPage')}">{f:translate(key: 'bookmarkThisPage')}</a></p>
+    <ul class="menu vertical bookmarks-list">
+        <f:comment>List is loaded asynchronously</f:comment>
+    </ul>
 </f:section>
 
 </html>

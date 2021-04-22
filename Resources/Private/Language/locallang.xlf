@@ -4,8 +4,17 @@
 		  product-name="bookmark_pages">
 		<header/>
 		<body>
+			<trans-unit id="yes">
+				<source>Yes</source>
+			</trans-unit>
 			<trans-unit id="bookmarkThisPage">
 				<source>Bookmark this page</source>
+			</trans-unit>
+			<trans-unit id="ff.isComplementary">
+				<source>Is complementary</source>
+			</trans-unit>
+			<trans-unit id="ff.isComplementary.description">
+				<source>In case the plugin is rendered more times on a page this option should be set for all instances except the first one.</source>
 			</trans-unit>
 		</body>
 	</file>

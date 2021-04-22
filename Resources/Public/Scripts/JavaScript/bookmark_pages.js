@@ -35,7 +35,7 @@
          * @return JSON object from bookmarks list held in local storage from browser
          */
         get list() {
-            return JSON.parse(localStorage.getItem('txBookmarkPagesBookmarks'));
+            return JSON.parse(localStorage.getItem('txBookmarkPagesBookmarks')) ?? {};
         },
 
         /**

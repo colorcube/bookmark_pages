@@ -1,28 +1,33 @@
 (function ($) {
     const settings = {
+        _$bookmarks: null,
+        _$listItemTemplate: null,
         // If set bookmarks are stored locally in localStorage
         _storeLocal: false,
         // Time in seconds during which the bookmarks are valid hence not queried from server
         _localStorageTTL: 3600,
         init () {
+            this._$bookmarks = $('#bookmarks');
+            this._$listItemTemplate = $($('#bookmark-template').html().trim());
             // Assign settings defined by host
-            let settings = $('#bookmarks').data('settings');
-            if (typeof settings !== 'object') {
+            let pluginSettings = this._$bookmarks.data('settings');
+            if (typeof pluginSettings !== 'object') {
                 return;
             }
-            if (settings.storeLocal !== 'undefined') {
-                this._storeLocal = Boolean(parseInt(settings.storeLocal));
+            if (pluginSettings.storeLocal !== 'undefined') {
+                this._storeLocal = Boolean(parseInt(pluginSettings.storeLocal));
             }
-            if (settings.localStorageTTL !== 'undefined') {
-                this._localStorageTTL = parseInt(settings.localStorageTTL);
+            if (pluginSettings.localStorageTTL !== 'undefined') {
+                this._localStorageTTL = parseInt(pluginSettings.localStorageTTL);
             }
         },
-        get storeLocal() {
-            return this._storeLocal;
-        },
-        get localStorageTTL() {
-            return this._localStorageTTL
-        }
+        get updateAjaxUri () { return this._$bookmarks.data('update-ajaxuri'); },
+        get addAjaxUri () { return this._$bookmarks.data('add-ajaxuri') },
+        get removeAjaxUri () { return this._$bookmarks.data('remove-ajaxuri') },
+        get currentBookmark () { return this._$bookmarks.data('bookmark') },
+        get $listItemTemplate () { return this._$listItemTemplate },
+        get storeLocal() { return this._storeLocal; },
+        get localStorageTTL() { return this._localStorageTTL }
     }
 
     const storage = {
@@ -66,7 +71,7 @@
 
     const assistant = {
         updateLinks () {
-            if (storage.containsBookmark(currentPage.bookmark)) {
+            if (storage.containsBookmark(settings.currentBookmark)) {
                 $('.bookmark-this-page').addClass('is-bookmarked');
             } else {
                 $('.bookmark-this-page').removeClass('is-bookmarked');
@@ -92,11 +97,10 @@
             }).done($.proxy(this.listQueryHandler, this));
         },
         initList (bookmarks) {
-            let $bookmarksList = $('#bookmarks-list'),
-                $listItem = $($('#bookmark-template').html().trim());
+            let $bookmarksList = $('.bookmarks-list');
             $bookmarksList.empty();
             Object.values(bookmarks).forEach(bookmark => {
-                let $item = $listItem.clone();
+                let $item = settings.$listItemTemplate.clone();
                 $('.bookmark-link', $item)
                     .attr('title', bookmark.title)
                     .attr('href', bookmark.url)
@@ -111,34 +115,22 @@
         }
     }
 
-    const currentPage = {
-        _bookmark: null,
-        init () {
-            this._bookmark = $('#bookmarks').data('bookmark');
-        },
-        get bookmark () {
-            return this._bookmark;
-        }
-    };
-
     const bookmarks = {
-        $bookmarks: null,
         init () {
-            this.$bookmarks = $('#bookmarks');
             if (settings.storeLocal && !storage.isOutdated) {
                 assistant.initListFromStorage();
                 assistant.updateLinks();
             } else {
-                assistant.ajax(this.$bookmarks.data('update-ajaxuri'));
+                assistant.ajax(settings.updateAjaxUri);
             }
         },
         add () {
-            assistant.ajax(this.$bookmarks.data('add-ajaxuri'));
+            assistant.ajax(settings.addAjaxUri);
         },
         remove (removeID) {
             assistant.ajax(
-                this.$bookmarks.data('remove-ajaxuri'),
-                {'tx_bookmarkpages_bookmarks[id]': removeID ?? currentPage.bookmark.id}
+                settings.removeAjaxUri,
+                {'tx_bookmarkpages_bookmarks[id]': removeID ?? settings.currentBookmark.id}
             );
         }
     }
@@ -165,7 +157,6 @@
 
         // Initialize the app
         settings.init();
-        currentPage.init();
         bookmarks.init();
     });
 })(jQuery);

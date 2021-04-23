@@ -1,2 +1,23 @@
-<f:render section="main" />
+<f:if condition="{settings.isComplementary as boolean}">
+    <f:then>
+        <div class="bookmark-pages">
+            <f:render section="main" />
+        </div>
+    </f:then>
+    <f:else>
+        <div class="bookmark-pages"
+             data-settings='{settings -> f:format.json()}'
+             data-bookmark='{bookmark -> f:format.json()}'
+             data-add-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}"
+             data-remove-ajaxuri="{t:uri.ajaxAction(action: 'delete')}"
+             data-update-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
+             id="bookmarks">
+
+            <f:render section="main" />
+            <template id="bookmark-template">
+                <f:render partial="ListItem" arguments="{bookmark: bookmark}" />
+            </template>
+        </div>
+    </f:else>
+</f:if>
 <f:asset.script identifier="bookmarkPages" src="EXT:bookmark_pages/Resources/Public/Scripts/JavaScript/bookmark_pages.js" />

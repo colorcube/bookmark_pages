@@ -6,27 +6,14 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-    <f:if condition="{settings.isComplementary as boolean}">
+    <f:if condition="{settings.listType} === 'alternative'">
         <f:then>
-            <div class="bookmark-pages">
-                <f:render section="BookmarkList" />
-            </div>
+            <f:comment>Render alternative list</f:comment>
+            <f:render section="BookmarkList" />
         </f:then>
         <f:else>
-            <div class="bookmark-pages"
-                 data-settings='{settings -> f:format.json()}'
-                 data-bookmark='{bookmark -> f:format.json()}'
-                 data-add-ajaxuri="{t:uri.ajaxAction(action: 'bookmark')}"
-                 data-remove-ajaxuri="{t:uri.ajaxAction(action: 'delete')}"
-                 data-update-ajaxuri="{t:uri.ajaxAction(action: 'listEntries')}"
-                 id="bookmarks">
-
-                <f:render section="BookmarkList" />
-                <template id="bookmark-template">
-                    <f:render partial="ListItem" arguments="{bookmark: bookmark}" />
-                </template>
-            </div>
-
+            <f:comment>Render default list</f:comment>
+            <f:render section="BookmarkList" />
             <f:comment>you may put this into your page template:</f:comment>
             <div class="bookmark-pages">
                 <p><a class="bookmark-ajax-submit bookmark-this-page" href="javascript:void(0);">Bookmark page in templates</a></p>

@@ -11,6 +11,26 @@
                 </TCEforms>
                 <type>array</type>
                 <el type="array">
+                    <settings.listType>
+                        <TCEforms>
+                            <label>LLL:EXT:bookmark_pages/Resources/Private/Language/locallang.xlf:ff.listType</label>
+                            <config type="array">
+                                <type>select</type>
+                                <renderType>selectSingle</renderType>
+                                <default>default</default>
+                                <items type="array">
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:bookmark_pages/Resources/Private/Language/locallang.xlf:default</numIndex>
+                                        <numIndex index="1">default</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">LLL:EXT:bookmark_pages/Resources/Private/Language/locallang.xlf:alternative</numIndex>
+                                        <numIndex index="1">alternative</numIndex>
+                                    </numIndex>
+                                </items>
+                            </config>
+                        </TCEforms>
+                    </settings.listType>
                     <settings.isComplementary>
                         <TCEforms>
                             <label>LLL:EXT:bookmark_pages/Resources/Private/Language/locallang.xlf:ff.isComplementary</label>

@@ -214,7 +214,8 @@ class Bookmarks {
             }
         }
 
-        return $accessibleBookmarks;
+        // Order the bookmarks (same sequence as at the beginning)
+        return array_intersect_key($bookmarks, $accessibleBookmarks);
     }
 
     /**

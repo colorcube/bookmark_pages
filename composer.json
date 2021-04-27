@@ -1,23 +1,23 @@
 {
-    "name": "colorcube/bookmark-pages",
+    "name": "buepro/typo3-bookmark-pages",
     "type": "typo3-cms-extension",
-    "description": "A TYPO3 extension that provides bookmarks functionality of local pages for logged in frontend users.",
+    "description": "A TYPO3 extension that provides bookmarks functionality of local pages.",
     "keywords": [
         "TYPO3",
         "extension",
         "bookmarks"
     ],
     "license": "GPL-2.0-or-later",
-    "homepage": "https://github.com/colorcube/bookmark_pages",
+    "homepage": "https://github.com/buepro/bookmark_pages",
     "support": {
-        "issues": "https://github.com/colorcube/bookmark_pages/issues"
+        "issues": "https://github.com/buepro/bookmark_pages/issues"
     },
     "authors": [
         {
-            "name": "René Fritz",
-            "email": "r.fritz@colorcube.de",
+            "name": "Roman Büchler",
+            "email": "rb@buechler.pro",
             "role": "Developer",
-            "homepage": "https://www.colorcube.de"
+            "homepage": "https://www.buechler.pro"
         }
     ],
     "require": {
@@ -25,12 +25,16 @@
         "typo3/cms-core": "^10.4",
         "helhum/typoscript-rendering": "^2.3.1"
     },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    },
     "autoload": {
         "psr-4": {
-            "Colorcube\\BookmarkPages\\": "Classes"
+            "Buepro\\BookmarkPages\\": "Classes/"
         }
     },
     "replace": {
+        "buepro/typo3-bookmark_pages": "self.version",
         "typo3-ter/bookmark-pages": "self.version"
     },
     "extra": {

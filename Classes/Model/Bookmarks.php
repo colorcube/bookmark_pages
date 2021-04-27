@@ -1,27 +1,24 @@
 <?php
-namespace Colorcube\BookmarkPages\Model;
 
 /*
- * This file is part of the Bookmark Pages TYPO3 extension.
+ * This file is part of the package buepro/bookmark_pages.
  *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read
+ * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
 
+namespace Colorcube\BookmarkPages\Model;
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 
 /**
  * Provide access to a list of Bookmark
  */
-class Bookmarks {
+class Bookmarks
+{
 
     /**
      * column in db
@@ -45,7 +42,6 @@ class Bookmarks {
     {
         // is login user?
         if (is_array($this->getUser()->user) && $this->getUser()->user[$this->getUser()->userid_column]) {
-
             $bookmarks  = $this->getUser()->user[self::BOOKMARKS_COLUMN];
             $bookmarks = (array)GeneralUtility::xml2array($bookmarks);
             foreach ($bookmarks as $bookmark) {
@@ -56,14 +52,13 @@ class Bookmarks {
         }
     }
 
-
     /**
      * persist bookmarks if needed
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->persist();
     }
-
 
     /**
      * Get all Bookmarks
@@ -75,7 +70,6 @@ class Bookmarks {
         return (array)$this->bookmarks;
     }
 
-
     /**
      * clear all bookmarks
      */
@@ -84,7 +78,6 @@ class Bookmarks {
         $this->bookmarks = [];
         $this->changeFlag = true;
     }
-
 
     /**
      * Add a bookmark
@@ -97,7 +90,6 @@ class Bookmarks {
         $this->changeFlag = true;
     }
 
-
     /**
      * Get Bookmark by given id
      *
@@ -109,18 +101,16 @@ class Bookmarks {
         return $this->bookmarks[$id];
     }
 
-
     /**
      * Check if a given bookmark is stored already
      *
      * @param Bookmark $bookmark
-     * @return boolean
+     * @return bool
      */
     public function bookmarkExists(Bookmark $bookmark)
     {
         return isset($this->bookmarks[$bookmark->getId()]);
     }
-
 
     /**
      * Remove bookmark by given id
@@ -133,7 +123,6 @@ class Bookmarks {
         $this->changeFlag = true;
     }
 
-
     /**
      * persist bookmarks if needed
      */
@@ -142,7 +131,7 @@ class Bookmarks {
         if ($this->changeFlag && is_array($this->getUser()->user) && $this->getUser()->user[$this->getUser()->userid_column]) {
             $bookmarks = [];
             foreach ($this->bookmarks as $bookmark) {
-                    $bookmarks[] = $bookmark->toArray();
+                $bookmarks[] = $bookmark->toArray();
             }
             /*
              * Why xml?
@@ -170,14 +159,13 @@ class Bookmarks {
         }
     }
 
-
     /**
      * Get global frontend user
      * @return \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication
      */
     protected function getUser()
     {
-        return $GLOBALS["TSFE"]->fe_user;
+        return $GLOBALS['TSFE']->fe_user;
     }
 
     /**
@@ -208,7 +196,7 @@ class Bookmarks {
 
         // Collect accessible bookmarks
         $accessibleBookmarks = [];
-        foreach($pages as $page) {
+        foreach ($pages as $page) {
             if (isset($pageMap[$page['uid']])) {
                 $accessibleBookmarks[$pageMap[$page['uid']]] = $bookmarks[$pageMap[$page['uid']]];
             }
@@ -224,9 +212,10 @@ class Bookmarks {
      * @param $bookmarks
      * @return array|Bookmark[]
      */
-    public function merge($bookmarks) {
+    public function merge($bookmarks)
+    {
         $bookmarksChanged = false;
-        foreach($bookmarks as $id => $bookmark) {
+        foreach ($bookmarks as $id => $bookmark) {
             if (!isset($this->bookmarks[$id])) {
                 $bookmarksChanged = true;
                 $this->bookmarks[$id] = new Bookmark($bookmark);
@@ -238,14 +227,13 @@ class Bookmarks {
         return $this->getBookmarks();
     }
 
-
     /**
      * Get bookmarks for local storage in browser
      */
     public function getBookmarksForLocalStorage(): array
     {
         $result = [];
-        foreach($this->getAccessibleBookmarks() as $bookmark) {
+        foreach ($this->getAccessibleBookmarks() as $bookmark) {
             $result[$bookmark->getId()] = $bookmark->toArray();
         }
         return $result;

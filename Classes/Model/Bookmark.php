@@ -1,23 +1,21 @@
 <?php
-namespace Colorcube\BookmarkPages\Model;
 
 /*
- * This file is part of the Bookmark Pages TYPO3 extension.
+ * This file is part of the package buepro/bookmark_pages.
  *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read
+ * For the full copyright and license information, please read the
  * LICENSE file that was distributed with this source code.
  */
+
+namespace Colorcube\BookmarkPages\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  *
  */
-class Bookmark {
+class Bookmark
+{
 
     /**
      * @var string
@@ -32,14 +30,13 @@ class Bookmark {
      */
     protected $url;
     /**
-     * @var integer
+     * @var int
      */
     protected $pid;
     /**
      * @var string
      */
     protected $parameter;
-
 
     /**
      * Bookmark constructor.
@@ -58,9 +55,8 @@ class Bookmark {
             $this->url = $url['url'];
             $this->pid = $url['pid'];
             $this->parameter = $url['parameter'];
-
         } else {
-            $this->id = md5($pid.':'.$parameter);
+            $this->id = md5($pid . ':' . $parameter);
             $this->title = $title;
             $this->url = $url;
             $this->pid = $pid;
@@ -77,14 +73,13 @@ class Bookmark {
     public static function createFromCurrent($url = null)
     {
         if ($url === null) {
-            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' ) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
                 //request is ajax
                 $url = GeneralUtility::getIndpEnv('HTTP_REFERER');
             } else {
                 $url = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
             }
         }
-
 
         $pid = self::getFrontend()->id;
         $title = self::getCurrentPageTitle();
@@ -105,10 +100,9 @@ class Bookmark {
          */
 
         $urlParts = parse_url($url);
-        $parameter = $urlParts['path'].'?'.$urlParts['query'].'#'.$urlParts['fragment'];
+        $parameter = $urlParts['path'] . '?' . $urlParts['query'] . '#' . $urlParts['fragment'];
 
         return new self($url, $title, $pid, $parameter);
-
 
         /*
          * So what is the idea of storing the pid and the get vars?
@@ -207,7 +201,6 @@ class Bookmark {
         $this->parameter = $parameter;
     }
 
-
     /**
      * Returns the bookmark data as array
      *
@@ -224,7 +217,6 @@ class Bookmark {
         ];
     }
 
-
     /**
      * Get the current page title
      * @return string
@@ -234,7 +226,6 @@ class Bookmark {
         return self::getFrontend()->altPageTitle? self::getFrontend()->altPageTitle : self::getFrontend()->page['title'];
     }
 
-
     /**
      *
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
@@ -243,5 +234,4 @@ class Bookmark {
     {
         return $GLOBALS['TSFE'];
     }
-
 }

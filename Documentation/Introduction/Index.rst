@@ -16,7 +16,8 @@ After logging in the bookmarks are saved to the server hence might be accessed f
 
 TypoScript and fluid templates are just examples. Adapt it to your needs.
 
-In the example templates there's nothing shown if the user is not logged in.
+The extension was created by `René Fritz <https://github.com/colorcube>`__. The ownership has been transferred in
+april 2021.
 
 
 Screenshots

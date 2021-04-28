@@ -2,6 +2,10 @@
 
 This is a TYPO3 extension that provides bookmarks functionality of local pages for logged in frontend users.
 
+**IMPORTANT**
+
+This extension has a new maintainer: https://github.com/buepro/typo3-bookmark_pages
+
 ## Usage
 
 TypoScript and fluid templates are just examples. Adapt it to your needs.
